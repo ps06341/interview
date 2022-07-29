@@ -1,14 +1,4 @@
 $(function() {
-	var callApiApplicationJson = function(url, method, dataJson, successCallback, errorCallback) {
-		$.ajax({
-			url: url,
-			method: method,
-			data: dataJson,
-			success: successCallback,
-			error: errorCallback
-		});
-	}
-
 	var renderTable = function(datas) {
 		var html = '';
 		if (datas.length > 0) {
@@ -25,9 +15,9 @@ $(function() {
 				html += datas[k].phone;
 				html += '</td><td class="gender" style="vertical-align: middle;">';
 				html += '<span class="badge rounded-pill bg-success">' + datas[k].gender + '</span>';
-				html += '</td><td>';
-				html += '<button type="button" class="btn btn-sm btn-success">Update</button>';
-				html += '<button type="button" class="btn btn-sm btn-danger" style="margin-left: 5px;">Delete</button>';
+				html += '</td><td class="row-control">';
+				html += '<button type="button" class="btn btn-sm btn-success" data-mode-button="Update" data-bs-toggle="modal" data-bs-target="#user-update-modal">Update</button>';
+				html += '<button type="button" class="btn btn-sm btn-danger">Delete</button>';
 				html += '</td></tr>';
 			});
 		}
@@ -46,14 +36,14 @@ $(function() {
 	}
 
 	var loadUser = function() {
-		var keySearch = '';
-		if (typeof $('#key-search').val() != 'undefined' && $('#key-search').val() != '') {
-			keySearch = $('#key-search').val();
-		}
+		//var keySearch = '';
+		//if (typeof $('#key-search').val() != 'undefined' && $('#key-search').val() != '') {
+		//	keySearch = $('#key-search').val();
+		//}
 
-		var data = {
-			'keySearch': keySearch
-		}
+		//var data = {
+		//	'keySearch': keySearch
+		//}
 
 		//callApiApplicationJson('/search', 'get', data, loadUserSuccess, undefined);
 		var result = {
@@ -88,5 +78,37 @@ $(function() {
 		}
 	}
 
+	var loadEvent = function() {
+		bindingModalEvent('#user-update-modal'
+			, function(event) {
+				cleanForm();
+				var button = event.relatedTarget;
+				var recipient = button.getAttribute('data-mode-button');
+				var btnExeVal = $('.btn-execute').html();
+				$('.btn-execute').html(btnExeVal.replace('@@Mode', recipient));
+				if (recipient.indexOf('Update') != -1) {
+					$('.btn-reset').css('display', 'none');
+					//TODO
+					//value user update
+				}
+			}
+			, function(event) {
+				var btnExeVal = $('.btn-execute').html();
+				$('.btn-execute').html(btnExeVal.replace(btnExeVal, '@@Mode'));
+				$('.btn-reset').css('display', 'block');
+			});
+	}
+
+	var cleanForm = function() {
+		$('#user-form-update input').each(function(k, v) {
+			$(this).val('');
+		});
+
+		$('#user-form-update select').each(function(k, v) {
+			$(this).val("true");
+		});
+	}
+
 	loadUser();
+	loadEvent();
 });

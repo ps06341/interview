@@ -1,0 +1,14 @@
+/* user-tbl navbar start */
+.navbar .form-inline button:not(:last-child) {
+	margin-right: 0.5rem !important;
+}
+/* user-tbl navbar end */
+
+/* user-update-dialog start */
+.user-update-modal {
+	display: none !important;
+}
+.modal-size-medium {
+	min-width: 600px !important;
+}
+/* user-update-dialog end */
