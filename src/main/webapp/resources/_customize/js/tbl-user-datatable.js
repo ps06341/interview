@@ -16,7 +16,22 @@ $(function() {
 				html += '</td><td class="gender" style="vertical-align: middle;">';
 				html += '<span class="badge rounded-pill bg-success">' + datas[k].gender + '</span>';
 				html += '</td><td class="row-control">';
-				html += '<button type="button" class="btn btn-sm btn-success" data-mode-button="Update" data-bs-toggle="modal" data-bs-target="#user-update-modal">Update</button>';
+				html += '<button type="button" class="btn btn-sm btn-success" data-mode-button="Update" data-bs-toggle="modal" data-bs-target="#user-update-modal"';
+				html += ' data-user-id="';
+				html += datas[k].id;
+				html += '" data-firstName="';
+				html += datas[k].firstName;
+				html += '" data-lastName="';
+				html += datas[k].lastName;
+				html += '" data-birthday="';
+				html += datas[k].birthday;
+				html += '" data-email="';
+				html += datas[k].email;
+				html += '" data-phone="';
+				html += datas[k].phone;
+				html += '" data-gender="';
+				html += datas[k].gender;
+				html += '">Update</button>';
 				html += '<button type="button" class="btn btn-sm btn-danger">Delete</button>';
 				html += '</td></tr>';
 			});
@@ -56,16 +71,16 @@ $(function() {
 					'birthday': '21/07/2020',
 					'email': 'Anv@gmail.com',
 					'phone': '090909',
-					'gender': 'Nam'
+					'gender': true
 				},
 				{
 					'id': '2',
-					'firstName': 'ngo van',
+					'firstName': 'ngo thi',
 					'lastName': 'B',
 					'birthday': '11/07/2021',
 					'email': 'Bnv@gmail.com',
 					'phone': '121212',
-					'gender': 'Nu'
+					'gender': false
 				}
 			]
 		}
@@ -81,32 +96,39 @@ $(function() {
 	var loadEvent = function() {
 		bindingModalEvent('#user-update-modal'
 			, function(event) {
-				cleanForm();
+				cleanForm('#user-update-modal');
 				var button = event.relatedTarget;
 				var recipient = button.getAttribute('data-mode-button');
-				var btnExeVal = $('.btn-execute').html();
-				$('.btn-execute').html(btnExeVal.replace('@@Mode', recipient));
-				if (recipient.indexOf('Update') != -1) {
-					$('.btn-reset').css('display', 'none');
-					//TODO
-					//value user update
+				var btnExeVal = $('.modal-btn-execute').html();
+				$('.modal-btn-execute').html(btnExeVal.replace('@@Mode', recipient));
+				
+				var userData = button.getAttribute('data-user-id');
+				if (typeof userData != 'undefined') {
+					$('.modal-btn-reset').css('display', 'none');
+					$('#user-id').val(button.getAttribute('data-user-id'));
+					$('#first-name').val(button.getAttribute('data-firstName'));
+					$('#last-name').val(button.getAttribute('data-lastName'));
+					$('#birthday').val(button.getAttribute('data-birthday'));
+					$('#email').val(button.getAttribute('data-email'));
+					$('#phone').val(button.getAttribute('data-phone'));
+					$('#gender').val(button.getAttribute('data-gender'));
+					
 				}
 			}
 			, function(event) {
-				var btnExeVal = $('.btn-execute').html();
-				$('.btn-execute').html(btnExeVal.replace(btnExeVal, '@@Mode'));
-				$('.btn-reset').css('display', 'block');
 			});
-	}
 
-	var cleanForm = function() {
-		$('#user-form-update input').each(function(k, v) {
-			$(this).val('');
-		});
-
-		$('#user-form-update select').each(function(k, v) {
-			$(this).val("true");
-		});
+		bindingModalBtnEvent(
+			'#user-update-modal'
+			,'.modal-btn-execute'
+			, function(event, modalId){
+				
+			}
+			, '.modal-btn-reset'
+			, function(event){
+				
+			}
+		);
 	}
 
 	loadUser();

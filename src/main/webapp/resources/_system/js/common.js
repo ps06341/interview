@@ -36,6 +36,8 @@ var bindingModalEvent = function(modalId, showCallback, hideCallback) {
 		var modalTitle = this.querySelector('.modal-title');
 		modalTitle.textContent = modalTitle.textContent.replace('@@Mode', recipient);
 
+		//set model mode
+		$(this).attr('modal-mode', recipient);
 		if (typeof showCallback != 'undefined') {
 			showCallback(event);
 		}
@@ -47,9 +49,67 @@ var bindingModalEvent = function(modalId, showCallback, hideCallback) {
 		modalTitleVal = modalTitleVal.replace(modalTitleVal, '@@Mode User Dialog');
 		modalTitle.textContent = modalTitleVal;
 
+		var btnExeVal = $('.modal-btn-execute').html();
+		$('.modal-btn-execute').html(btnExeVal.replace(btnExeVal, '@@Mode'));
+		$('.modal-btn-reset').css('display', 'block');
+
 		if (typeof showCallback != 'undefined') {
 			hideCallback(event);
 		}
+	});
+}
+
+var bindingModalBtnEvent = function(modalId, btnExecute, executeCallback, btnReset, resetCallback) {
+	var modalSelectorId = '.modal';
+	if (typeof modalId != 'undefined' || modalId != '') {
+		modalSelectorId = modalId;
+		if (modalSelectorId[0] != '#') {
+			modalSelectorId = '#' + modalSelectorId;
+		}
+	}
+
+	if (typeof btnExecute != 'undefined' || btnExecute != '') {
+		btnExecute = '.modal-btn-execute';
+	}
+	if (btnExecute[0] != '#' && btnExecute[0] != '.') {
+		btnExecute = '#' + btnExecute;
+	}
+
+	if (typeof btnReset != 'undefined' || btnReset != '') {
+		btnReset = '.modal-btn-reset';
+	}
+	if (btnReset[0] != '#' && btnReset[0] != '.') {
+		btnReset = '#' + btnReset;
+	}
+
+	$(btnExecute).on('click', function(event) {
+		if (typeof executeCallback != 'undefined') {
+			executeCallback(event, modalSelectorId);
+		}
+	});
+
+	$(btnReset).on('click', function(event) {
+		if (typeof resetCallback != 'undefined') {
+			cleanForm(modalSelectorId);
+			resetCallback(event);
+		}
+	});
+}
+
+var cleanForm = function(modalId) {
+	if (typeof modalId != 'undefined' || modalId != '') {
+		selectorVal = modalId;
+		if (selectorVal[0] != '#') {
+			selectorVal = '#' + selectorVal;
+		}
+	}
+
+	$(selectorVal + ' input').each(function(k, v) {
+		$(this).val('');
+	});
+
+	$(selectorVal + ' select').each(function(k, v) {
+		$(this).val("true");
 	});
 }
 

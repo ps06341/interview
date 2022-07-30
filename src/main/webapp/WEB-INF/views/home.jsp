@@ -54,6 +54,7 @@
 		      </div>
 		      <div class="modal-body">
 		        <form id="user-form-update">
+		        	<input type="hidden" name="id" id="user-id" value="" />
 		            <div class="row mb-3">
 					  <label for="first-name" class="col-sm-2 col-form-label col-form-label-sm">First Name</label>
 					  <div class="col-sm-10">
@@ -96,8 +97,8 @@
 		        </form>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary btn-execute">@@Mode</button>
-		        <button type="button" class="btn btn-light btn-reset">Reset</button>
+		        <button type="button" class="btn btn-primary modal-btn-execute">@@Mode</button>
+		        <button type="button" class="btn btn-light modal-btn-reset">Reset</button>
 		      </div>
 		    </div>
 		  </div>
