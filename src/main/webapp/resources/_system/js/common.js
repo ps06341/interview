@@ -13,6 +13,8 @@ var callApiApplicationJson = function(url, method, dataJson, successCallback, er
 		url: url,
 		method: method,
 		data: dataJson,
+		contentType: 'application/json',
+		dataType: 'json',
 		success: successCallback,
 		error: errorCallback
 	});
@@ -85,6 +87,7 @@ var bindingModalBtnEvent = function(modalId, btnExecute, executeCallback, btnRes
 	$(btnExecute).on('click', function(event) {
 		if (typeof executeCallback != 'undefined') {
 			executeCallback(event, modalSelectorId);
+			cleanForm(modalSelectorId);
 		}
 	});
 

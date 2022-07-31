@@ -24,7 +24,7 @@
 			<a class="navbar-brand" href="#">User Management</a>
 			<form class="form-inline">
 				<input class="form-control mr-sm-2" type="text" id="key-search" placeholder="Search" aria-label="Search"/>
-				<button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
+				<button class="btn btn-outline-success my-2 my-sm-0 btn-search-user" type="button">Search</button>
 				<button class="btn btn-outline-success my-2 my-sm-0" type="button" data-bs-toggle="modal" data-bs-target="#user-update-modal" data-mode-button="Create New">Add</button>
 			</form>
 		</nav>

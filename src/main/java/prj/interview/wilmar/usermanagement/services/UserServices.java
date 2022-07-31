@@ -17,6 +17,10 @@ public class UserServices {
 		return userDAO.getAllUsers();
 	}
 
+	public List<User> findDataByKeysearch(String keySearch) {
+		return userDAO.findDataByKeysearch(keySearch);
+	}
+
 	public void updateData(User user) {
 		userDAO.saveUser(user);
 	}

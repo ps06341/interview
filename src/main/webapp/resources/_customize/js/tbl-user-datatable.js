@@ -1,5 +1,9 @@
 $(function() {
+	let dataTable = undefined;
 	var renderTable = function(datas) {
+		if(typeof dataTable != 'undefined'){
+			dataTable.destroy();
+		}
 		var html = '';
 		if (datas.length > 0) {
 			$(datas).each(function(k, v) {
@@ -39,7 +43,7 @@ $(function() {
 		}
 
 		$('#user-tbl-tbody').html(html);
-		$('#user-tbl').DataTable({
+		dataTable = $('#user-tbl').DataTable({
 			'columns': [
 				{ 'width': '28%' },
 				{ 'width': '15%' },
@@ -47,54 +51,38 @@ $(function() {
 				{ 'width': '15%' },
 				{ 'width': '10%' },
 				{ 'width': '12%' }
-			]
+			],
+			dom: 'Plfrtip',
+			language: {
+				searchPanes: {
+					emptyPanes: 'There are no panes to display. :/'
+				}
+			}
 		});
 	}
 
 	var loadUser = function() {
-		//var keySearch = '';
-		//if (typeof $('#key-search').val() != 'undefined' && $('#key-search').val() != '') {
-		//	keySearch = $('#key-search').val();
-		//}
-
-		//var data = {
-		//	'keySearch': keySearch
-		//}
-
-		//callApiApplicationJson('/search', 'get', data, loadUserSuccess, undefined);
-		var result = {
-			'statusCode': 200,
-			'data': [
-				{
-					'id': '1',
-					'firstName': 'nguyen van',
-					'lastName': 'A',
-					'birthday': '21/07/2020',
-					'email': 'Anv@gmail.com',
-					'phone': '090909',
-					'gender': true
-				},
-				{
-					'id': '2',
-					'firstName': 'ngo thi',
-					'lastName': 'B',
-					'birthday': '11/07/2021',
-					'email': 'Bnv@gmail.com',
-					'phone': '121212',
-					'gender': false
-				}
-			]
+		var keySearch = '';
+		if (typeof $('#key-search').val() != 'undefined' && $('#key-search').val() != '') {
+			keySearch = $('#key-search').val();
 		}
-		loadUserSuccess(result);
+
+		var data = {
+			'keySearch': keySearch
+		}
+
+		callApiApplicationJson(window.location.href + 'user/load', 'get', data, loadUserSuccess, undefined);
 	}
 
 	var loadUserSuccess = function(result) {
-		if (result.statusCode == 200) {
-			renderTable = renderTable(result.data);
-		}
+		renderTable(result);
 	}
 
 	var loadEvent = function() {
+		$('.btn-search-user').on('click', function(e) {
+			loadUser();
+		});
+
 		bindingModalEvent('#user-update-modal'
 			, function(event) {
 				cleanForm('#user-update-modal');
@@ -102,9 +90,9 @@ $(function() {
 				var recipient = button.getAttribute('data-mode-button');
 				var btnExeVal = $('.modal-btn-execute').html();
 				$('.modal-btn-execute').html(btnExeVal.replace('@@Mode', recipient));
-				
+
 				var userData = button.getAttribute('data-user-id');
-				if (typeof userData != 'undefined') {
+				if (typeof userData != 'undefined' && userData != null) {
 					$('.modal-btn-reset').css('display', 'none');
 					$('#user-id').val(button.getAttribute('data-user-id'));
 					$('#first-name').val(button.getAttribute('data-firstName'));
@@ -113,7 +101,7 @@ $(function() {
 					$('#email').val(button.getAttribute('data-email'));
 					$('#phone').val(button.getAttribute('data-phone'));
 					$('#gender').val(button.getAttribute('data-gender'));
-					
+
 				}
 			}
 			, function(event) {
@@ -121,13 +109,31 @@ $(function() {
 
 		bindingModalBtnEvent(
 			'#user-update-modal'
-			,'.modal-btn-execute'
-			, function(event, modalId){
-				
+			, '.modal-btn-execute'
+			, function(event, modalId) {
+				$('#msg-container').html('');
+				var data = {
+					"firstName": $('#first-name').val(),
+					"lastName": $('#last-name').val(),
+					"birthday": $('#birthday').val(),
+					"email": $('#email').val(),
+					"phone": $('#phone').val(),
+					"gender": $('#gender').val()
+				}
+				var mode = 'Save';
+				if($('#user-id').val() != ''){
+					mode = "Update";
+					data['id'] = $('#user-id').val();
+				}
+				callApiApplicationJson(window.location.href + 'user/update', 'post', JSON.stringify(data), function(result){
+					showMessage(MSG_TYPE_SUCCESS, mode + " Successfully!!!");
+					loadUser();
+					$('#user-update-modal').modal('hide')
+				}, undefined);
 			}
 			, '.modal-btn-reset'
-			, function(event){
-				
+			, function(event) {
+
 			}
 		);
 	}

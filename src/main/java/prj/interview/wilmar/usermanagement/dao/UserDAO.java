@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +31,24 @@ public class UserDAO {
 			list = entityManager.createQuery("SELECT u FROM defaultUser u").getResultList();
 		} catch (Exception e) {
 
+		} finally {
+			entityManager.close();
+		}
+		return (List<User>) list;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<User> findDataByKeysearch(String keySearch) {
+		List<User> list = new ArrayList<User>();
+		try {
+			entityManager = entityManagerFactory.createEntityManager();
+			Query query = entityManager
+					.createQuery("SELECT u FROM defaultUser u Where u.firstName like :first or u.lastName like :last");
+			query.setParameter("first", "%" + keySearch + "%");
+			query.setParameter("last", "%" + keySearch + "%");
+			list = query.getResultList();
+		} catch (Exception e) {
+			System.out.print(e.toString());
 		} finally {
 			entityManager.close();
 		}
@@ -85,7 +103,7 @@ public class UserDAO {
 			transaction = entityManager.getTransaction();
 			transaction.begin();
 			User delUser = returnUserById(user);
-			if(delUser == null) {
+			if (delUser == null) {
 				return;
 			}
 			entityManager.remove(delUser);
@@ -96,7 +114,7 @@ public class UserDAO {
 			entityManager.close();
 		}
 	}
-	
+
 	private User returnUserById(User user) throws Exception {
 		User findUser = entityManager.find(User.class, user.getId());
 		return findUser;
