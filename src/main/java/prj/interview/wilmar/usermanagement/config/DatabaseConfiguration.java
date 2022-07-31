@@ -5,8 +5,11 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -17,8 +20,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "prj.interview.wilmar.usermanagement")
+@PropertySource("classpath:databases.properties")
 public class DatabaseConfiguration implements WebMvcConfigurer {
 
+	@Autowired
+	private Environment env;
+	
 	@Bean
 	public LocalContainerEntityManagerFactoryBean getEntityManagerFactoryBean() {
 		LocalContainerEntityManagerFactoryBean lcemfb = new LocalContainerEntityManagerFactoryBean();
@@ -39,10 +46,10 @@ public class DatabaseConfiguration implements WebMvcConfigurer {
 	@Bean
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/wilmar_test");
-		dataSource.setUsername("root");
-		dataSource.setPassword("root");
+		dataSource.setDriverClassName(env.getProperty("database.driverClassName"));
+		dataSource.setUrl(env.getProperty("database.url"));
+		dataSource.setUsername(env.getProperty("database.username"));
+		dataSource.setPassword(env.getProperty("database.password"));
 		return dataSource;
 	}
 
@@ -54,9 +61,10 @@ public class DatabaseConfiguration implements WebMvcConfigurer {
 
 	private Properties jpaProperties() {
 		Properties properties = new Properties();
-		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-		properties.put("hibernate.show_sql", "true");
-		properties.put("hibernate.format_sql", "true");
+		properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+		properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+		properties.put("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+
 		return properties;
 	}
 }

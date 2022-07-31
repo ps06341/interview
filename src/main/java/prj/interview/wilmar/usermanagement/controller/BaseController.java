@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import prj.interview.wilmar.usermanagement.config.WebAppInitializer;
 import prj.interview.wilmar.usermanagement.services.UserServices;
 
 public class BaseController {
@@ -16,7 +15,7 @@ public class BaseController {
 	protected UserServices userServices;
 	
 	// base logger
-	protected final Logger log = LoggerFactory.getLogger(WebAppInitializer.class);
+	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	/***
 	 * method generate and return stacktrace as String
