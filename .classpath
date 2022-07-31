@@ -36,5 +36,25 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Admin/.m2/repository/org/springframework/data/spring-data-commons/2.5.3/spring-data-commons-2.5.3.jar" sourcepath="C:/Users/Admin/.m2/repository/org/springframework/data/spring-data-commons/2.5.3/spring-data-commons-2.5.3-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.archivename" value="spring-data-commons-2.5.3.jar"/>
+			<attribute name="maven.groupId" value="org.springframework.data"/>
+			<attribute name="maven.artifactId" value="spring-data-commons"/>
+			<attribute name="maven.version" value="2.5.3"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Admin/.m2/repository/org/springframework/data/spring-data-commons/2.3.3.RELEASE/spring-data-commons-2.3.3.RELEASE.jar" sourcepath="C:/Users/Admin/.m2/repository/org/springframework/data/spring-data-commons/2.3.3.RELEASE/spring-data-commons-2.3.3.RELEASE-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.archivename" value="spring-data-commons-2.3.3.RELEASE.jar"/>
+			<attribute name="maven.groupId" value="org.springframework.data"/>
+			<attribute name="maven.artifactId" value="spring-data-commons"/>
+			<attribute name="maven.version" value="2.3.3.RELEASE"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

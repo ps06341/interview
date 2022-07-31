@@ -16,12 +16,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-//@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "prj.interview.wilmar.usermanagement")
-//@PropertySource("classpath:db.properties")
 public class DatabaseConfiguration implements WebMvcConfigurer {
-//	@Autowired
-//	private Environment env;
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean getEntityManagerFactoryBean() {
@@ -43,10 +39,6 @@ public class DatabaseConfiguration implements WebMvcConfigurer {
 	@Bean
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
-//		dataSource.setDriverClassName(env.getProperty("database.driverClassName"));
-//		dataSource.setUrl(env.getProperty("database.url"));
-//		dataSource.setUsername(env.getProperty("database.username"));
-//		dataSource.setPassword(env.getProperty("database.password"));
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/wilmar_test");
 		dataSource.setUsername("root");
@@ -62,9 +54,6 @@ public class DatabaseConfiguration implements WebMvcConfigurer {
 
 	private Properties jpaProperties() {
 		Properties properties = new Properties();
-//		properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
-//		properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-//		properties.put("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.format_sql", "true");

@@ -1,39 +1,22 @@
 package prj.interview.wilmar.usermanagement.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 
-@Table(name = "tbl_user")
-@Entity(name = "defaultUser")
-public class User extends BaseUser{
+import org.springframework.data.redis.core.RedisHash;
 
-	public User() {}
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+@RedisHash("RedisUser")
+public class RedisUser extends BaseUser implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7612734847695205478L;
+
 	private Integer id;
-
-	@Column(name = "firstname")
 	private String firstName;
-
-	@Column(name = "lastname")
 	private String lastName;
-
-	@Column(name = "birtday")
 	private String birthday;
-
-	@Column(name = "email")
 	private String email;
-
-	@Column(name = "phone")
 	private String phone;
-
-	@Column(name = "gender")
 	private Boolean gender;
 
 	public Integer getId() {

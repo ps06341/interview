@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import prj.interview.wilmar.usermanagement.entity.BaseUser;
 import prj.interview.wilmar.usermanagement.entity.User;
 
 @Repository
@@ -24,22 +25,22 @@ public class UserDAO {
 	EntityTransaction transaction;
 
 	@SuppressWarnings("unchecked")
-	public List<User> getAllUsers() {
-		List<User> list = new ArrayList<User>();
+	public List<BaseUser> getAllUsers() {
+		List<BaseUser> list = new ArrayList<>();
 		try {
 			entityManager = entityManagerFactory.createEntityManager();
 			list = entityManager.createQuery("SELECT u FROM defaultUser u").getResultList();
 		} catch (Exception e) {
-
+			System.out.println(e.toString());
 		} finally {
 			entityManager.close();
 		}
-		return (List<User>) list;
+		return (List<BaseUser>) list;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<User> findDataByKeysearch(String keySearch) {
-		List<User> list = new ArrayList<User>();
+	public List<? extends BaseUser> findDataByKeysearch(String keySearch) {
+		List<User> list = new ArrayList<>();
 		try {
 			entityManager = entityManagerFactory.createEntityManager();
 			Query query = entityManager
@@ -62,7 +63,7 @@ public class UserDAO {
 			entityManager = entityManagerFactory.createEntityManager();
 			findUser = returnUserById(user);
 		} catch (Exception e) {
-
+			System.out.println(e.toString());
 		} finally {
 			entityManager.close();
 		}
@@ -91,6 +92,7 @@ public class UserDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
+			System.out.println(e.toString());
 		} finally {
 			entityManager.close();
 		}
@@ -110,6 +112,7 @@ public class UserDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
+			System.out.println(e.toString());
 		} finally {
 			entityManager.close();
 		}
