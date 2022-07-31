@@ -37,7 +37,7 @@ $(function() {
 				html += '" data-gender="';
 				html += datas[k].gender;
 				html += '">Update</button>';
-				html += '<button type="button" class="btn btn-sm btn-danger">Delete</button>';
+				html += '<button type="button" class="btn btn-sm btn-danger btn-del-user" data-user-id="'+ datas[k].id +'">Delete</button>';
 				html += '</td></tr>';
 			});
 		}
@@ -81,6 +81,19 @@ $(function() {
 	var loadEvent = function() {
 		$('.btn-search-user').on('click', function(e) {
 			loadUser();
+		});
+
+		$(document).on('click', '.btn-del-user', function(e) {
+			var result = confirm("Do u want to delete?");
+			if (result) {
+				var data = {
+					"id": $(this).attr('data-user-id')
+				}
+				callApiApplicationJson(window.location.href + 'user/del', 'post', JSON.stringify(data), function(result){
+					showMessage(MSG_TYPE_SUCCESS, "Delete Successfully!!!");
+					loadUser();
+				}, undefined);
+			}
 		});
 
 		bindingModalEvent('#user-update-modal'
