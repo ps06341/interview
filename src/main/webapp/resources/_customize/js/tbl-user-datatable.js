@@ -14,7 +14,8 @@ $(function() {
 				html += '</td><td class="phone">';
 				html += datas[k].phone;
 				html += '</td><td class="gender" style="vertical-align: middle;">';
-				html += '<span class="badge rounded-pill bg-success">' + datas[k].gender + '</span>';
+				var genderStr = datas[k].gender ? 'Nam' : 'Nu';
+				html += '<span class="badge rounded-pill bg-success">' + genderStr + '</span>';
 				html += '</td><td class="row-control">';
 				html += '<button type="button" class="btn btn-sm btn-success" data-mode-button="Update" data-bs-toggle="modal" data-bs-target="#user-update-modal"';
 				html += ' data-user-id="';
