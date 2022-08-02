@@ -26,10 +26,11 @@ public class UserServices {
 			redisUserDao.findAll().forEach(users::add);
 			if (users != null && !users.isEmpty()) {
 				return users;
-			}			
+			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
+
 		return userDAO.getAllUsers();
 	}
 
@@ -45,24 +46,35 @@ public class UserServices {
 
 	public void updateData(User user) {
 		RedisUser redisUser = new RedisUser();
-		if(user.getId() == null) {
-			redisUser.setId(redisUserDao.generateUniqueId());
-		} else {
-			redisUser.setId(user.getId());
-		}
-		
+
 		redisUser.setFirstName(user.getFirstName());
 		redisUser.setLastName(user.getLastName());
 		redisUser.setBirthday(user.getBirthday());
 		redisUser.setEmail(user.getEmail());
 		redisUser.setPhone(user.getPhone());
 		redisUser.setGender(user.getGender());
-		redisUserDao.save(redisUser);
-		// userDAO.saveUser(user);
+		redisUser.setId(user.getId());
+
+		// save db
+		userDAO.saveUser(user);
+
+		if (user.getId() == null) {
+			// save update cache db
+			reloadCaching();
+		} else {
+			// update to update cache db
+			redisUserDao.save(redisUser);
+		}
 	}
 
 	public void delData(User user) {
+		// del cache db
 		redisUserDao.deleteById(user.getId() + "");
+		// save cache db
 		userDAO.delUser(user);
+	}
+	
+	public void reloadCaching() {
+		redisUserDao.reloadCaching(userDAO.getAllUsersNoCast());
 	}
 }

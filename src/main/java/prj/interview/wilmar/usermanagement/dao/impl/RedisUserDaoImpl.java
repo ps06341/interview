@@ -2,6 +2,7 @@ package prj.interview.wilmar.usermanagement.dao.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import prj.interview.wilmar.usermanagement.dao.RedisUserDao;
 import prj.interview.wilmar.usermanagement.entity.RedisUser;
+import prj.interview.wilmar.usermanagement.entity.User;
 
 @Repository
 public class RedisUserDaoImpl implements RedisUserDao {
@@ -143,4 +145,24 @@ public class RedisUserDaoImpl implements RedisUserDao {
 		return id;
 	}
 
+	@Override
+	public <S extends User> Iterable<User> reloadCaching(Iterable<User> entities) {
+		//Map<Integer, User> map = ((Collection<User>) entities).stream().collect(Collectors.toMap(User::getId, Function.identity()));
+		Map<Integer, RedisUser> map = new LinkedHashMap<Integer, RedisUser>();
+		RedisUser redisUser = null;
+		for (User user : entities) {
+			redisUser = new RedisUser();
+			redisUser.setId(user.getId());
+			redisUser.setFirstName(user.getFirstName());
+			redisUser.setLastName(user.getLastName());
+			redisUser.setBirthday(user.getBirthday());
+			redisUser.setEmail(user.getEmail());
+			redisUser.setPhone(user.getPhone());
+			redisUser.setGender(user.getGender());
+			map.put(redisUser.getId(), redisUser);
+		}
+		hashOperations.putAll(hashReference, map);
+
+		return null;
+	}
 }

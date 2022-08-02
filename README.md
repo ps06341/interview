@@ -10,10 +10,9 @@ project test for interview in Wilmar
 ---------------
 --- Improve ---
 ---------------
-1./ onStartUp => load data from mysql -> redis
-2./ r of crud -> object redis
-3./ cud of crud -> manipulationObject redis
-4./ per 5s -> if manipulationObject.size != 0 -> merge redis to mysql -> reload data from mysql -> redis
++ 1./ onStartUp => load data from mysql -> redis
++ 2./ r of crud -> object redis
++ 3./ cud of crud -> manipulationObject redis + object redis
 
 # Spring mvc 5.2.12.RELEASE
 + DONE

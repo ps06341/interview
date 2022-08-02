@@ -35,7 +35,22 @@ public class UserDAO {
 		} finally {
 			entityManager.close();
 		}
-		return (List<BaseUser>) list;
+
+		return list;
+	}
+
+	public List<User> getAllUsersNoCast() {
+		List<User> list = new ArrayList<>();
+		try {
+			entityManager = entityManagerFactory.createEntityManager();
+			list = entityManager.createQuery("SELECT u FROM defaultUser u").getResultList();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		} finally {
+			entityManager.close();
+		}
+
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -76,7 +91,7 @@ public class UserDAO {
 			entityManager = entityManagerFactory.createEntityManager();
 			transaction = entityManager.getTransaction();
 			if (user.getId() != null) {
-				// for example
+				// update
 				User updateUser = returnUserById(user);
 				updateUser.setFirstName(user.getFirstName());
 				updateUser.setLastName(user.getLastName());
@@ -86,6 +101,7 @@ public class UserDAO {
 				updateUser.setGender(user.getGender());
 				entityManager.merge(updateUser);
 			} else {
+				// save
 				entityManager.persist(user);
 			}
 			transaction.begin();
