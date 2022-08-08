@@ -24,7 +24,7 @@ public class RedisUserDaoImpl implements RedisUserDao {
 	private final String hashReference = "RedisUser";
 
 	private RedisTemplate<String, Object> redisTemplate;
-	private HashOperations hashOperations;
+	private HashOperations<String, Integer, RedisUser> hashOperations;
 
 	@Autowired
 	public RedisUserDaoImpl(RedisTemplate<String, Object> redisTemplate) {
