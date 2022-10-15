@@ -1,0 +1,17 @@
+version: '3'
+services:
+  tomcat-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: wilmar-user-web
+    container_name: user-web
+    ports:
+      - "8081:8080"
+    networks:
+      - my-network
+
+volumes:
+  my-volume:
+networks:
+  my-network:
