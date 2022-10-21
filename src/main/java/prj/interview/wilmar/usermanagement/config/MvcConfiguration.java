@@ -10,8 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan(basePackages = "prj.interview.wilmar.usermanagement")
 @EnableWebMvc
+@ComponentScan(basePackages = {
+    "prj.interview.wilmar.usermanagement"
+})
 public class MvcConfiguration implements WebMvcConfigurer {
 //	@Bean
 //	public HandlerMapping resourceHandlerMapping() {
